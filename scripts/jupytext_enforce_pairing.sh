@@ -14,7 +14,7 @@ for nb in "$@"; do
   fi;
   if ! git ls-files --error-unmatch "$py" >/dev/null 2>&1; then
     echo "❌ Paired file exists but is not tracked by git: $py" >&2;
-    echo "💡 Run: git add \"$py\"" >&2;
+    echo "💡 Run: git add \"$py\" \"$nb\"" >&2;
     failed=1;
   fi;
 done;
