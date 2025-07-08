@@ -1,0 +1,17 @@
+- id: nbstripout-preserve-timestamp
+  name: nbstripout (preserve timestamp)
+  entry: scripts/nbstripout_preserve_timestamp.sh
+  language: script
+  types: [jupyter]
+
+- id: jupytext-enforce-pairing
+  name: jupytext (enforce pairing)
+  entry: scripts/jupytext_enforce_pairing.sh
+  language: script
+  types: [jupyter]
+
+- id: jupytext-smart-sync
+  name: jupytext (smart sync)
+  entry: scripts/jupytext_smart_sync.sh
+  language: script
+  types_or: [jupyter, python]

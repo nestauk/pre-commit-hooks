@@ -1,10 +1,3 @@
-[build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-packages = ["pre_commit_hooks"]
-
 [project]
 name = "pre_commit_hooks"
 version = "0.1.0"
@@ -13,14 +6,17 @@ authors = [{ name = "Nesta" }]
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = "==3.13.*"
-dependencies = []
+dependencies = [
+    "jupytext>=1.17.2",
+    "nbstripout>=0.8.1",
+]
 
 [project.urls]
 repository = "https://github.com/nestauk/pre-commit-hooks"
 issues = "https://github.com/nestauk/pre-commit-hooks/issues"
 
 [dependency-groups]
-dev = ["ipykernel", "jupytext", "nbstripout", "ruff", "pre-commit"]
+dev = ["ipykernel", "ruff", "pre-commit"]
 
 [tool.ruff]
 line-length = 120
