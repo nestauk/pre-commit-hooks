@@ -13,7 +13,7 @@ To use all three of these hooks, you can add the following to your `.pre-commit-
 ```yaml
 repos:
   - repo: https://github.com/nestauk/pre-commit-hooks
-    rev: v0.1.0
+    rev: v0.1.1
     hooks:
       - id: nbstripout-preserve-timestamp
       - id: jupytext-enforce-pairing
