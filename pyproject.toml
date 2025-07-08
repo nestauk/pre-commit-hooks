@@ -1,6 +1,6 @@
 [project]
 name = "pre_commit_hooks"
-version = "0.1.1"
+version = "1.0.0"
 description = "A library of custom `pre-commit-hooks` used in other projects"
 authors = [{ name = "Nesta" }]
 license = { text = "MIT" }
