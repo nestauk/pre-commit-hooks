@@ -10,7 +10,7 @@
   language: script
   types: [jupyter]
 
-- id: jupytext-sync-smart
+- id: jupytext-smart-sync
   name: jupytext (smart sync)
   entry: scripts/jupytext_smart_sync.sh
   language: script
