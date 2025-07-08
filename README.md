@@ -17,7 +17,7 @@ repos:
     hooks:
       - id: nbstripout-preserve-timestamp
       - id: jupytext-enforce-pairing
-      - id: jupytext-sync-smart
+      - id: jupytext-smart-sync
 ```
 
 ## Development
