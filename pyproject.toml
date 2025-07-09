@@ -1,3 +1,10 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["pre_commit_hooks"]
+
 [project]
 name = "pre_commit_hooks"
 version = "1.0.0"
@@ -14,6 +21,11 @@ issues = "https://github.com/nestauk/pre-commit-hooks/issues"
 
 [dependency-groups]
 dev = ["ipykernel", "ruff"]
+
+[project.scripts]
+nbstripout-preserve-timestamp = "hooks.nbstripout_preserve_timestamp:main"
+jupytext-enforce-pairing = "hooks.jupytext_enforce_pairing:main"
+jupytext-smart-sync = "hooks.jupytext_smart_sync:main"
 
 [tool.ruff]
 line-length = 120
