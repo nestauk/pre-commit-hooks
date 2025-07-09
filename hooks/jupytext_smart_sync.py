@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 import subprocess
 import sys
@@ -9,8 +8,14 @@ def get_modified_files() -> set[str]:
     return set(result.stdout.split())
 
 
-def main(files: list[str]) -> None:
+def main() -> int:
+    files = sys.argv[1:]
     processed = set()
+    return_code = 0
+
+    # Get the list of modified files before making any changes
+    modified_before = get_modified_files()
+
     for file in files:
         if file.endswith(".ipynb"):
             nb_file = file
@@ -20,20 +25,41 @@ def main(files: list[str]) -> None:
             nb_file = file[:-3] + ".ipynb"
         else:
             continue
+
         pair_key = f"{nb_file}:{py_file}"
         if pair_key in processed:
             continue
+
         processed.add(pair_key)
-        if os.path.isfile(nb_file) and os.path.isfile(py_file):
-            print("❌ Files are out of sync, syncing via jupytext...", file=sys.stderr)
-            subprocess.run(["jupytext", "--sync", py_file], check=True)
+
+        # Only proceed if both files exist
+        if not (os.path.isfile(nb_file) and os.path.isfile(py_file)):
+            continue
+
+        # Run jupytext sync
+        subprocess.run(["jupytext", "--sync", py_file], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Check which files were modified by comparing with initial state
+        modified_after = get_modified_files()
+
+        # If either file is now in the modified list but wasn't before, report it
+        files_changed = False
+        if py_file in modified_after and py_file not in modified_before:
+            print(f"❌ Python file out of sync: {py_file}", file=sys.stderr)
+            print(f'💡 Untracked modification from sync, run: git add "{py_file}"', file=sys.stderr)
+            files_changed = True
+
+        if nb_file in modified_after and nb_file not in modified_before:
+            print(f"❌ Notebook out of sync: {nb_file}", file=sys.stderr)
+            print(f'💡 Untracked modification from sync, run: git add "{nb_file}"', file=sys.stderr)
+            files_changed = True
+
+        if files_changed:
             print("✅ Files synced", file=sys.stderr)
-            modified = get_modified_files()
-            if py_file in modified:
-                print(f'💡 Untracked modification from sync, run: git add "{py_file}"', file=sys.stderr)
-            elif nb_file in modified:
-                print(f'💡 Untracked modification from sync, run: git add "{nb_file}"', file=sys.stderr)
+            return_code = 1
+
+    return return_code
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    sys.exit(main())
