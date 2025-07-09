@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import datetime
 import os
 import platform
@@ -32,27 +31,35 @@ def set_mtime(file: str, timestamp: int) -> None:
             pass
 
 
+def notebook_has_outputs(file: str) -> bool:
+    """Check if notebook has outputs that need stripping."""
+    # Based on nbstripout's test mode:
+    # - Returns 0 if notebook doesn't need stripping (no outputs)
+    # - Returns 1 if notebook needs stripping (has outputs)
+    result = subprocess.run(["nbstripout", "--test", file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    return result.returncode != 0
+
+
 def main() -> int:
     files = sys.argv[1:]
     return_code = 0
 
     for file in files:
         if file.endswith(".ipynb") and os.path.isfile(file):
-            original_timestamp = get_mtime(file)
+            # Only process if the notebook actually has outputs
+            if notebook_has_outputs(file):
+                original_timestamp = get_mtime(file)
 
-            # Check if there are outputs to strip
-            result = subprocess.run(
-                ["nbstripout", "--test", file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False
-            )
-
-            # If nbstripout detected outputs (returns non-zero), strip them
-            if result.returncode != 0:
                 print(f"❌ Stripping outputs from: {file}", file=sys.stderr)
                 subprocess.run(["nbstripout", file], check=True)
+
                 if original_timestamp is not None:
                     set_mtime(file, original_timestamp)
+
                 print("✅ Outputs stripped, timestamp preserved", file=sys.stderr)
                 return_code = 1
+            else:
+                print(f"✅ No outputs to strip in: {file}", file=sys.stderr)
 
     return return_code
 
