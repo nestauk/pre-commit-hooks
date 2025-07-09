@@ -1,4 +1,5 @@
 import datetime
+import json
 import os
 import platform
 import subprocess
@@ -32,17 +33,35 @@ def set_mtime(file: str, timestamp: int) -> None:
 
 
 def notebook_has_outputs(file: str) -> bool:
-    """Check if notebook has outputs that need stripping."""
-    # Based on nbstripout's test mode:
-    # - Returns 0 if notebook doesn't need stripping (no outputs)
-    # - Returns 1 if notebook needs stripping (has outputs)
-    result = subprocess.run(["nbstripout", "--test", file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-    return result.returncode != 0
+    """Check if notebook has outputs that need stripping by inspecting the JSON content."""
+    try:
+        with open(file, "r") as f:
+            notebook = json.load(f)
+
+        # Check each cell for outputs
+        for cell in notebook.get("cells", []):
+            if cell.get("cell_type") == "code" and len(cell.get("outputs", [])) > 0:
+                return True
+
+        # Check for execution count
+        for cell in notebook.get("cells", []):
+            if (
+                cell.get("cell_type") == "code"
+                and cell.get("execution_count") is not None
+                and cell.get("execution_count") != 0
+            ):
+                return True
+
+        return False
+    except Exception as e:
+        print(f"Error checking notebook {file}: {e}", file=sys.stderr)
+        # If we can't parse the notebook, better safe than sorry - strip it
+        return True
 
 
 def main() -> int:
     files = sys.argv[1:]
-    return_code = 0
+    any_changes = False
 
     for file in files:
         if file.endswith(".ipynb") and os.path.isfile(file):
@@ -57,11 +76,11 @@ def main() -> int:
                     set_mtime(file, original_timestamp)
 
                 print("✅ Outputs stripped, timestamp preserved", file=sys.stderr)
-                return_code = 1
+                any_changes = True
             else:
                 print(f"✅ No outputs to strip in: {file}", file=sys.stderr)
 
-    return return_code
+    return 1 if any_changes else 0
 
 
 if __name__ == "__main__":
