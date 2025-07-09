@@ -43,19 +43,16 @@ def main() -> int:
         modified_after = get_modified_files()
 
         # If either file is now in the modified list but wasn't before, report it
-        files_changed = False
         if py_file in modified_after and py_file not in modified_before:
-            print(f"❌ Python file out of sync: {py_file}", file=sys.stderr)
+            print(f"⚠️ Python file out of sync: {py_file}", file=sys.stderr)
+            print("✅ Files synced", file=sys.stderr)
             print(f'💡 Untracked modification from sync, run: git add "{py_file}"', file=sys.stderr)
-            files_changed = True
+            return_code = 1
 
         if nb_file in modified_after and nb_file not in modified_before:
-            print(f"❌ Notebook out of sync: {nb_file}", file=sys.stderr)
-            print(f'💡 Untracked modification from sync, run: git add "{nb_file}"', file=sys.stderr)
-            files_changed = True
-
-        if files_changed:
+            print(f"⚠️ Notebook out of sync: {nb_file}", file=sys.stderr)
             print("✅ Files synced", file=sys.stderr)
+            print(f'💡 Untracked modification from sync, run: git add "{nb_file}"', file=sys.stderr)
             return_code = 1
 
     return return_code

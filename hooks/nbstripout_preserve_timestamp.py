@@ -74,8 +74,11 @@ def main() -> int:
 
                 if original_timestamp is not None:
                     set_mtime(file, original_timestamp)
+                    print("✅ Outputs stripped, timestamp preserved", file=sys.stderr)
+                else:
+                    print(f"⚠️ Could not preserve timestamp for {file}", file=sys.stderr)
 
-                print("✅ Outputs stripped, timestamp preserved", file=sys.stderr)
+                print(f'💡 Untracked modification from stripping outputs, run: git add "{file}"')
                 any_changes = True
             else:
                 print(f"✅ No outputs to strip in: {file}", file=sys.stderr)

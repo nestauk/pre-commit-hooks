@@ -31,12 +31,12 @@ def main() -> int:
                 return_code = 1
             else:
                 print("✅ Paired file generated", file=sys.stderr)
-                # We modified files, so return non-zero to indicate changes made
+                print(f'💡 Run: git add "{py}" "{nb}"', file=sys.stderr)
                 return_code = 1
 
         # Check if paired file is tracked by git
         elif not is_tracked_by_git(py):
-            print(f"❌ Paired file exists but is not tracked by git: {py}", file=sys.stderr)
+            print(f"⚠️ Paired file exists but is not tracked by git: {py}", file=sys.stderr)
             print(f'💡 Run: git add "{py}" "{nb}"', file=sys.stderr)
             return_code = 1
 
