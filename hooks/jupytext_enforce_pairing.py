@@ -37,7 +37,7 @@ def main() -> int:
         # Check if paired file is tracked by git
         elif not is_tracked_by_git(py):
             print(f"⚠️ Paired file exists but is not tracked by git: {py}", file=sys.stderr)
-            print(f'💡 Run: git add "{py}" "{nb}"', file=sys.stderr)
+            print(f'💡 Untracked changes from pairing, run: git add "{py}" "{nb}"', file=sys.stderr)
             return_code = 1
 
     return return_code
