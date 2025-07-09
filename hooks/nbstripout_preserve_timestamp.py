@@ -32,14 +32,30 @@ def set_mtime(file: str, timestamp: int) -> None:
             pass
 
 
-def main(files: list[str]) -> None:
+def main() -> int:
+    files = sys.argv[1:]
+    return_code = 0
+
     for file in files:
         if file.endswith(".ipynb") and os.path.isfile(file):
             original_timestamp = get_mtime(file)
-            subprocess.run(["nbstripout", file], check=True)
-            if original_timestamp is not None:
-                set_mtime(file, original_timestamp)
+
+            # Check if there are outputs to strip
+            result = subprocess.run(
+                ["nbstripout", "--test", file], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False
+            )
+
+            # If nbstripout detected outputs (returns non-zero), strip them
+            if result.returncode != 0:
+                print(f"❌ Stripping outputs from: {file}", file=sys.stderr)
+                subprocess.run(["nbstripout", file], check=True)
+                if original_timestamp is not None:
+                    set_mtime(file, original_timestamp)
+                print("✅ Outputs stripped, timestamp preserved", file=sys.stderr)
+                return_code = 1
+
+    return return_code
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    sys.exit(main())
