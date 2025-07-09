@@ -1,23 +1,20 @@
 - id: nbstripout-preserve-timestamp
   name: nbstripout (preserve timestamp)
-  entry: scripts/nbstripout_preserve_timestamp.sh
+  entry: scripts/nbstripout_preserve_timestamp.py
   language: python
   types: [jupyter]
-  additional_dependencies:
-    - nbstripout
+  additional_dependencies: [nbstripout]
 
 - id: jupytext-enforce-pairing
   name: jupytext (enforce pairing)
-  entry: scripts/jupytext_enforce_pairing.sh
+  entry: scripts/jupytext_enforce_pairing.py
   language: python
   types: [jupyter]
-  additional_dependencies:
-    - jupytext
+  additional_dependencies: [jupytext]
 
 - id: jupytext-smart-sync
   name: jupytext (smart sync)
-  entry: scripts/jupytext_smart_sync.sh
+  entry: scripts/jupytext_smart_sync.py
   language: python
   types_or: [jupyter, python]
-  additional_dependencies:
-    - jupytext
+  additional_dependencies: [jupytext]
