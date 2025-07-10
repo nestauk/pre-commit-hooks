@@ -41,7 +41,6 @@ After installing `direnv` and `uv` on your system (we recommend doing this via [
 ```bash
 direnv allow
 uv sync
-uv run pre-commit install --install-hooks
 ```
 
 ## Contributor guidelines
