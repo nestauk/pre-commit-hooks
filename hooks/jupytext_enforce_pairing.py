@@ -15,9 +15,6 @@ def main() -> int:
     return_code = 0
 
     for nb in files:
-        if not nb.endswith(".ipynb"):
-            continue
-
         py = nb[:-6] + ".py"
 
         # Check if paired file exists
@@ -30,13 +27,13 @@ def main() -> int:
                 return_code = 1
             else:
                 print("✅ Paired file generated", file=sys.stderr)
-                print(f'💡 Run: git add "{py}" "{nb}"', file=sys.stderr)
+                print(f"💡 Run: git add {py} {nb}", file=sys.stderr)
                 return_code = 1
 
         # Check if paired file is tracked by git
         elif not is_tracked_by_git(py):
-            print(f"⚠️ Paired file exists but is not tracked by git: {py}", file=sys.stderr)
-            print(f'💡 Untracked changes from pairing, run: git add "{py}" "{nb}"', file=sys.stderr)
+            print("⚠️ Paired file exists but is not tracked by git", file=sys.stderr)
+            print(f"💡 Run: git add {py}", file=sys.stderr)
             return_code = 1
 
     return return_code
