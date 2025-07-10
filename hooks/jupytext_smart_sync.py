@@ -73,9 +73,14 @@ def main() -> int:
                 files_out_of_sync.append(file)
                 return_code = 1
 
-    print("❌ The following files are out of sync with their paired files:", file=sys.stderr)
-    print("\n".join(files_out_of_sync), file=sys.stderr)
-    print("\n🔄 Syncing files\n", file=sys.stderr)
+    if len(files_out_of_sync) > 1:
+        print("❌ The following files are out of sync with their paired files:", file=sys.stderr)
+        print("\n".join(files_out_of_sync), file=sys.stderr)
+        print("🔄 Syncing files", file=sys.stderr)
+    else:
+        print("❌ The following file is out of sync with its paired file:", file=sys.stderr)
+        print("\n".join(files_out_of_sync), file=sys.stderr)
+        print("🔄 Syncing file", file=sys.stderr)
     print(f"💡 Run: git add {' '.join(files_out_of_sync)}", file=sys.stderr)
 
     return return_code

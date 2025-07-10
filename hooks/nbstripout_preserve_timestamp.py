@@ -63,26 +63,30 @@ def main() -> int:
     files = sys.argv[1:]
     any_changes = False
 
+    files_to_strip = []
+    result_strings = []
+    files_stripped = []
     for file in files:
         if file.endswith(".ipynb") and os.path.isfile(file):
             # Only process if the notebook actually has outputs
             if notebook_has_outputs(file):
                 original_timestamp = get_mtime(file)
 
-                print(f"❌ Stripping outputs from: {file}", file=sys.stderr)
+                files_to_strip.append(file)
                 subprocess.run(["nbstripout", file], check=True)
 
                 if original_timestamp is not None:
                     set_mtime(file, original_timestamp)
-                    print("✅ Outputs stripped, timestamp preserved", file=sys.stderr)
+                    result_strings.append(f"✅ Outputs stripped from {file}, timestamp preserved")
+                    files_stripped.append(file)
                 else:
-                    print(f"⚠️ Could not preserve timestamp for {file}", file=sys.stderr)
-
-                print(f'💡 Run: git add "{file}"')
+                    result_strings.append(f"⚠️ Could not preserve timestamp for {file}")
                 any_changes = True
-            else:
-                print(f"✅ No outputs to strip in: {file}", file=sys.stderr)
 
+    print("❌ Stripping outputs from:", file=sys.stderr)
+    print("\n".join(files_to_strip), file=sys.stderr)
+    print("\n".join(result_strings), file=sys.stderr)
+    print(f"💡 Run: git add {' '.join(files_stripped)}", file=sys.stderr)
     return 1 if any_changes else 0
 
 
