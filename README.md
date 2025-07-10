@@ -1,12 +1,12 @@
 # Nesta `pre-commit` hooks
 
-To use these hooks, you need to have `pre-commit` installed. You can then edit the `.pre-commit-config.yaml` file in your project root to include the hooks defined in this directory. Currently, the hooks are:
+To use these hooks, you need to have `pre-commit` installed. You can then edit the `.pre-commit-config.yaml` file in your project root to include the hooks defined in this directory. Currently, we have one group of hooks that are designed to run in the following sequence:
 
-- `nbstripout-preserve-timestamp`: Strips output from Jupyter notebooks while preserving the original file timestamp to facilitate smooth interoperation with `jupytext --sync` type functionality (which relies on the file timestamp).
+1. `nbstripout-preserve-timestamp`: Strips output from Jupyter notebooks while preserving the original file timestamp to facilitate smooth interoperation with `jupytext --sync` type functionality (which relies on the file timestamp).
 
-- `jupytext-enforce-pairing`: Ensures every Jupyter notebook has a corresponding Python (.py) file that is tracked by `git`. Automatically generates missing paired files.
+2. `jupytext-enforce-pairing`: Ensures every Jupyter notebook has a corresponding Python (.py) file that is tracked by `git`. Automatically generates missing paired files.
 
-- `jupytext-smart-sync`: Synchronises content between Jupyter notebooks and their paired Python files when either is modified, maintaining consistency between the two formats, relies on underlying file timestamps and `jupytext --sync` to determine the correct direction of sync; identifies pairs based on the file name and extension and only runs on one of the two files (not both).
+3. `jupytext-smart-sync`: Synchronises content between Jupyter notebooks and their paired Python files when either is modified, maintaining consistency between the two formats, relies on underlying file timestamps and `jupytext --sync` to determine the correct direction of sync; identifies pairs based on the file name and extension and only runs on one of the two files (not both).
 
 To use all three of these hooks, you can add the following to your `.pre-commit-config.yaml` file:
 
@@ -19,6 +19,11 @@ repos:
       - id: jupytext-enforce-pairing
       - id: jupytext-smart-sync
 ```
+
+There are two suggested ways to use these hooks:
+
+1. All three hooks together fora full workflow, or
+2. `jupytext-enforce-pairing` on its own if you only need pairing
 
 ## Development
 

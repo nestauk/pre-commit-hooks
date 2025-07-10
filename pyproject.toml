@@ -1,3 +1,10 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["hooks"]
+
 [project]
 name = "pre_commit_hooks"
 version = "1.0.0"
@@ -15,15 +22,18 @@ issues = "https://github.com/nestauk/pre-commit-hooks/issues"
 [dependency-groups]
 dev = ["ipykernel", "ruff"]
 
+[project.scripts]
+nbstripout-preserve-timestamp = "hooks.nbstripout_preserve_timestamp:main"
+jupytext-enforce-pairing = "hooks.jupytext_enforce_pairing:main"
+jupytext-smart-sync = "hooks.jupytext_smart_sync:main"
+
 [tool.ruff]
 line-length = 120
 
 [tool.ruff.lint]
 select = [
     "ANN", # flake8-annotations
-    "B",   # flake8-bugbear: Likely bugs
     "C",   # flake8-comprehensions and mccabe complexity
-    "D",   # pydocstyle: Docstring conventions
     "E",   # pycodestyle: Errors (default)
     "F",   # pyflakes: Linter
     "I",   # isort
@@ -36,7 +46,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["pre_commit_hooks"]
+known-first-party = ["hooks"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
