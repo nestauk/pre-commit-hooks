@@ -20,7 +20,10 @@ repos:
       - id: jupytext-smart-sync
 ```
 
-`jupytext-enforce-pairing` should work independently but the other two hooks are designed to work together, so you should use them in conjunction as a three or only the middle one if you just want to ensure pairing has been done.
+There are two suggested ways to use these hooks:
+
+1. All three hooks together fora full workflow, or
+2. `jupytext-enforce-pairing` on its own if you only need pairing
 
 ## Development
 
