@@ -78,7 +78,7 @@ def main() -> int:
                 else:
                     print(f"⚠️ Could not preserve timestamp for {file}", file=sys.stderr)
 
-                print(f'💡 Untracked modification from stripping outputs, run: git add "{file}"')
+                print(f'💡 Run: git add "{file}"')
                 any_changes = True
             else:
                 print(f"✅ No outputs to strip in: {file}", file=sys.stderr)

@@ -66,15 +66,17 @@ def main() -> int:
     after_modified = get_modified_files()
 
     # Check for changes
-    output = []
+    files_out_of_sync = []
     for nb_file, py_file in file_pairs:
         for file in (nb_file, py_file):
             if has_file_changed(file, original_hashes.get(file), before_modified, after_modified):
-                output.append(
-                    f"🔄 File out of sync: '{file}'\n💡 Untracked modification from sync, run: git add '{file}'\n"
-                )
+                files_out_of_sync.append(file)
                 return_code = 1
-    print("\n".join(output), file=sys.stderr)
+
+    print("❌ The following files are out of sync with their paired files:", file=sys.stderr)
+    print("\n".join(files_out_of_sync), file=sys.stderr)
+    print("\n🔄 Syncing files\n", file=sys.stderr)
+    print(f"💡 Run: git add {' '.join(files_out_of_sync)}", file=sys.stderr)
 
     return return_code
 
