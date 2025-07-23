@@ -12,8 +12,11 @@ description = "A library of custom `pre-commit-hooks` used in other projects"
 authors = [{ name = "Nesta" }]
 license = { text = "MIT" }
 readme = "README.md"
-requires-python = ">=3.6"
-dependencies = ["jupytext>=1.15.2", "nbstripout>=0.6.2"]
+requires-python = ">=3.9"
+dependencies = [
+    "jupytext>=1.17.2",
+    "nbstripout>=0.8.1",
+]
 
 [project.urls]
 repository = "https://github.com/nestauk/pre-commit-hooks"
