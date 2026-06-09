@@ -34,6 +34,7 @@ This project uses [`uv`](https://docs.astral.sh/uv/) for virtual environment man
 We also utilise `direnv` via the `.envrc` file to automatically:
 
 - Import your environment variables from `.env`
+- Unset `UV_INDEX` so this public project does not inherit private PyPI index settings
 - Activate your virtual environment (_only if you comment out the relevant lines in `.envrc`_)
 
 After installing `direnv` and `uv` on your system (we recommend doing this via [`brew`](https://brew.sh/) on macOS), you **must** run the following commands in your terminal to set up the project:
